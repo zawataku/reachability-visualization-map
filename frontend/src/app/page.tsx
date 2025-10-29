@@ -39,12 +39,12 @@ export default function Home() {
         <button
           onClick={checkOtpConnection}
           disabled={isLoading}
-          className="p-3 bg-sky-500 text-neutral-50 w-32 rounded-xl"
+          className="p-3 bg-sky-500 text-neutral-50 min-w-32 rounded-xl"
         >
           {isLoading ? "テスト中..." : "OTP 接続テスト"}
         </button>
 
-        <pre className="break-all whitespace-pre-wrap w-full p-6 bg-neutral-700 text-neutral-50">
+        <pre className="break-all whitespace-pre-wrap w-full p-6 bg-neutral-700 text-neutral-50 max-h-[500px] overflow-scroll">
           {response ? response : "ここにOTPからの応答が表示されます..."}
         </pre>
       </div>
