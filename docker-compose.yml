@@ -1,0 +1,26 @@
+version: '3.8'
+
+services:
+  # 1. OpenTripPlanner (バックエンド)
+  otp:
+    build: ./otp
+    container_name: otp
+    environment:
+      - JAVA_OPTS=-Xmx8G
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./otp/graph:/var/opentripplanner
+    command: ["--build", "--serve"]
+
+  # 2. Next.js (フロントエンド)
+  frontend:
+    build: ./frontend
+    container_name: frontend
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    depends_on:
+      - otp
