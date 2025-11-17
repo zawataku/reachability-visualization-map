@@ -9,11 +9,10 @@ services:
       - JAVA_OPTS=-Xmx8G
     ports:
       - "8080:8080"
-    volumes:
-      - ./otp/graph:/var/opentripplanner
-    command: ["--build", "--serve"]
+    # volumes:
+    #   - ./otp/graph:/var/otp/graphs/default
+    command: ["java", "-jar", "/app/otp-1.5.0-shaded.jar", "--build", "/var/otp/graphs/default", "--inMemory", "--analyst"]
 
-  # 2. Next.js (フロントエンド)
   frontend:
     build: ./frontend
     container_name: frontend

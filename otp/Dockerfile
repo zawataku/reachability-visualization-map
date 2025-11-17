@@ -1,3 +1,6 @@
-FROM opentripplanner/opentripplanner:2.6.0_2024-07-11T01-17
+FROM eclipse-temurin:11-jre-alpine
 
-COPY ./graph/ /var/otp/graphs/default/
+WORKDIR /app
+
+COPY ./jar/otp-1.5.0-shaded.jar /app/otp-1.5.0-shaded.jar
+COPY ./graph /var/otp/graphs/default
