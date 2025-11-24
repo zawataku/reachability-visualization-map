@@ -11,7 +11,7 @@ services:
       - "8080:8080"
     # volumes:
     #   - ./otp/graph:/var/otp/graphs/default
-    command: ["java", "-jar", "/app/otp-1.5.0-shaded.jar", "--build", "/var/otp/graphs/default", "--inMemory", "--analyst"]
+    command: ["java", "-jar", "/app/otp-1.5.0-shaded.jar", "--build", "/var/otp/graphs/default", "--inMemory"]
 
   frontend:
     build: ./frontend
