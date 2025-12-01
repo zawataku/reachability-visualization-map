@@ -43,7 +43,7 @@ function App() {
         time: targetTime,
         mode: 'WALK,TRANSIT',
         maxWalkDistance: '1000',
-        cutoffSec: "3600",
+        cutoffSec: "21600",
       });
 
       // バックエンド(OTP)へのリクエスト
@@ -134,7 +134,7 @@ function App() {
         {isochroneData && (
           <div className="absolute top-4 right-4 bg-white p-3 rounded shadow-lg z-1000 text-sm">
             <div className="flex items-center gap-2">
-              <span className="w-4 h-4 bg-blue-500 opacity-50 border border-blue-600 block"></span>
+              <span className="w-4 h-4 bg-[#D32F2F] opacity-50 border border-blue-600 block"></span>
               <span>到達可能エリア</span>
             </div>
           </div>

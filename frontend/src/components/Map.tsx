@@ -46,7 +46,7 @@ const Map = ({ facilities, selectedFacility, onSelectFacility, isochroneData }: 
     const initialPosition: [number, number] = [36.791630863926656, 137.0163640018638];
 
     const geoJsonStyle = {
-        fillColor: "#3B82F6",
+        fillColor: "#D32F2F",
         weight: 1,
         opacity: 1,
         color: 'white',
