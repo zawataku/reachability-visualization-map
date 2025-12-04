@@ -25,12 +25,12 @@ const StatsDisplay = ({ stats }: StatsDisplayProps) => {
                 <div className="grid grid-cols-2 gap-3">
                     <div className="bg-gray-50 p-3 rounded-lg border border-gray-100 text-center">
                         <div className="text-[10px] text-gray-500 mb-1">到達可能人口</div>
-                        <div className="font-bold text-gray-800 text-lg">{stats.coveredPop.toLocaleString()}</div>
+                        <div className="font-bold text-gray-800 text-lg">{Math.round(stats.coveredPop).toLocaleString()}</div>
                         <div className="text-[10px] text-gray-400">人</div>
                     </div>
                     <div className="bg-gray-50 p-3 rounded-lg border border-gray-100 text-center">
                         <div className="text-[10px] text-gray-500 mb-1">エリア総人口</div>
-                        <div className="font-bold text-gray-800 text-lg">{stats.totalPop.toLocaleString()}</div>
+                        <div className="font-bold text-gray-800 text-lg">{Math.round(stats.totalPop).toLocaleString()}</div>
                         <div className="text-[10px] text-gray-400">人</div>
                     </div>
                 </div>

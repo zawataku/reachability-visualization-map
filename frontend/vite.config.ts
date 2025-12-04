@@ -8,4 +8,13 @@ export default defineConfig({
     react(),
     tailwindcss()
   ],
+  server: {
+    proxy: {
+      '/api/reinfolib': {
+        target: 'https://www.reinfolib.mlit.go.jp',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api\/reinfolib/, '')
+      }
+    }
+  }
 })

@@ -26,18 +26,59 @@ export const useAppLogic = () => {
     const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
+        const controller = new AbortController();
         const loadPopulationData = async () => {
             try {
-                const res = await fetch("/mesh_data/16.json");
-                if (!res.ok) throw new Error("Population data not found");
-                const data = await res.json();
-                setPopulationData(data);
-                console.log("Population data loaded:", data.features.length, "meshes");
-            } catch (error) {
+                const apiKey = import.meta.env.VITE_REINFOLIB_API_KEY;
+                if (!apiKey) {
+                    console.error("API key is missing. Please set VITE_REINFOLIB_API_KEY in .env");
+                    return;
+                }
+
+                const tiles = [
+                    { x: 1803, y: 797 },
+                    { x: 1803, y: 798 },
+                    { x: 1802, y: 798 }
+                ];
+
+                const requests = tiles.map(tile =>
+                    fetch(`/api/reinfolib/ex-api/external/XKT013?response_format=geojson&z=11&x=${tile.x}&y=${tile.y}`, {
+                        headers: {
+                            "Ocp-Apim-Subscription-Key": apiKey
+                        },
+                        signal: controller.signal
+                    }).then(async res => {
+                        if (!res.ok) throw new Error(`Request failed for tile ${tile.x},${tile.y}`);
+                        return res.json();
+                    })
+                );
+
+                const results = await Promise.all(requests);
+
+                // Merge features from all tiles
+                const allFeatures = results.flatMap((data: FeatureCollection) => data.features);
+
+                const mergedData: FeatureCollection = {
+                    type: "FeatureCollection",
+                    features: allFeatures
+                };
+
+                setPopulationData(mergedData);
+                console.log("Population data loaded:", allFeatures.length, "meshes from", tiles.length, "tiles");
+                // console.log("Full Data Object:", mergedData); 
+            } catch (error: unknown) {
+                if (error instanceof Error && error.name === 'AbortError') {
+                    console.log('Fetch aborted');
+                    return;
+                }
                 console.error("Failed to load population data:", error);
             }
         };
         loadPopulationData();
+
+        return () => {
+            controller.abort();
+        };
     }, []);
 
     useEffect(() => {
@@ -60,7 +101,7 @@ export const useAppLogic = () => {
         // 人口メッシュごとの判定
         populationData.features.forEach((feature: Feature) => {
             const props = feature.properties || {};
-            const pop = props.population || 0;
+            const pop = props.PTN_2020 || 0;
 
             if (feature.geometry) {
                 // メッシュの中心点を計算
