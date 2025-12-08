@@ -8,6 +8,8 @@ function App() {
     setSelectedFacility,
     selectedScenarioId,
     setSelectedScenarioId,
+    selectedYear,
+    setSelectedYear,
     isochroneData,
     stats,
     isLoading,
@@ -21,6 +23,8 @@ function App() {
         scenarios={SCENARIOS}
         selectedScenarioId={selectedScenarioId}
         onSelectScenarioId={setSelectedScenarioId}
+        selectedYear={selectedYear}
+        onSelectYear={setSelectedYear}
         onSearch={handleSearch}
         isLoading={isLoading}
         stats={stats}

@@ -20,6 +20,7 @@ import { HIMI_CITY_POLYGON } from "../data/boundaries";
 export const useAppLogic = () => {
     const [selectedFacility, setSelectedFacility] = useState<Facility | null>(null);
     const [selectedScenarioId, setSelectedScenarioId] = useState<string>(SCENARIOS[0].id);
+    const [selectedYear, setSelectedYear] = useState<'2020' | '2065'>('2020');
     const [isochroneData, setIsochroneData] = useState<FeatureCollection | null>(null);
     const [populationData, setPopulationData] = useState<FeatureCollection | null>(null);
     const [stats, setStats] = useState<Stats | null>(null);
@@ -101,7 +102,7 @@ export const useAppLogic = () => {
         // 人口メッシュごとの判定
         populationData.features.forEach((feature: Feature) => {
             const props = feature.properties || {};
-            const pop = props.PTN_2020 || 0;
+            const pop = selectedYear === '2020' ? (props.PTN_2020 || 0) : (props.PTN_2065 || 0);
 
             if (feature.geometry) {
                 // メッシュの中心点を計算
@@ -128,7 +129,7 @@ export const useAppLogic = () => {
             coveredPop,
             percentage: totalPop > 0 ? (coveredPop / totalPop) * 100 : 0,
         });
-    }, [isochroneData, populationData]);
+    }, [isochroneData, populationData, selectedYear]);
 
     const handleSearch = async () => {
         if (!selectedFacility) {
@@ -169,12 +170,13 @@ export const useAppLogic = () => {
             setIsLoading(false);
         }
     };
-
     return {
         selectedFacility,
         setSelectedFacility,
         selectedScenarioId,
         setSelectedScenarioId,
+        selectedYear,
+        setSelectedYear,
         isochroneData,
         stats,
         isLoading,

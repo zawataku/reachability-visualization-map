@@ -15,6 +15,8 @@ interface SidebarProps {
     scenarios: Scenario[];
     selectedScenarioId: string;
     onSelectScenarioId: (id: string) => void;
+    selectedYear: '2020' | '2065';
+    onSelectYear: (year: '2020' | '2065') => void;
     onSearch: () => void;
     isLoading: boolean;
     stats: Stats | null;
@@ -25,6 +27,8 @@ const Sidebar = ({
     scenarios,
     selectedScenarioId,
     onSelectScenarioId,
+    selectedYear,
+    onSelectYear,
     onSearch,
     isLoading,
     stats
@@ -43,6 +47,24 @@ const Sidebar = ({
                     selectedScenarioId={selectedScenarioId}
                     onSelectScenarioId={onSelectScenarioId}
                 />
+
+                <div className="flex items-center justify-between bg-gray-50 p-3 rounded-lg border border-gray-200">
+                    <span className="text-sm font-medium text-gray-700">人口データ基準年</span>
+                    <div className="flex bg-gray-200 rounded-lg p-1 relative">
+                        <button
+                            onClick={() => onSelectYear('2020')}
+                            className={`px-3 py-1 text-xs font-bold rounded-md transition-all z-10 ${selectedYear === '2020' ? 'bg-white text-blue-600 shadow-sm' : 'text-gray-500 hover:text-gray-700'}`}
+                        >
+                            2020年
+                        </button>
+                        <button
+                            onClick={() => onSelectYear('2065')}
+                            className={`px-3 py-1 text-xs font-bold rounded-md transition-all z-10 ${selectedYear === '2065' ? 'bg-white text-blue-600 shadow-sm' : 'text-gray-500 hover:text-gray-700'}`}
+                        >
+                            2065年(予想)
+                        </button>
+                    </div>
+                </div>
 
                 <button
                     onClick={onSearch}
