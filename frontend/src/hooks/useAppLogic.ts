@@ -10,12 +10,12 @@ export const SCENARIOS = [
 ];
 
 export const FACILITIES: Facility[] = [
-    { id: '1', name: '金沢医科大学氷見市民病院', lat: 36.857236126567436, lon: 136.96744588128246, type: 'hospital' },
-    { id: '2', name: 'アルビス 氷見店', lat: 36.83954104779495, lon: 136.98720552009104, type: 'supermarket' },
-    { id: '3', name: 'イオンモール高岡', lat: 36.72398312341095, lon: 137.01681490346044, type: 'supermarket' },
+    { id: '1', name: '珠洲市総合病院', lat: 37.443687763127535, lon: 137.27066058600244, type: 'hospital' },
+    { id: '2', name: 'ゲンキー野々江店', lat: 37.44214641839527, lon: 137.27335936962766, type: 'supermarket' },
+    // { id: '3', name: 'イオンモール高岡', lat: 36.72398312341095, lon: 137.01681490346044, type: 'supermarket' },
 ];
 
-import { HIMI_CITY_POLYGON } from "../data/boundaries";
+import { SUZU_CITY_POLYGON } from "../data/boundaries";
 
 export const useAppLogic = () => {
     const [selectedFacility, setSelectedFacility] = useState<Facility | null>(null);
@@ -37,9 +37,10 @@ export const useAppLogic = () => {
                 }
 
                 const tiles = [
-                    { x: 1803, y: 797 },
-                    { x: 1803, y: 798 },
-                    { x: 1802, y: 798 }
+                    { x: 1804, y: 794 },
+                    { x: 1805, y: 794 },
+                    { x: 1804, y: 795 }, // 追加
+                    { x: 1805, y: 795 }  // 追加
                 ];
 
                 const requests = tiles.map(tile =>
@@ -109,8 +110,8 @@ export const useAppLogic = () => {
                 const center = getPolygonCentroid(feature.geometry);
                 if (!center) return;
 
-                // 指定した自治体（氷見市）に含まれるか判定
-                const isInMunicipality = isPointInPolygon(center, HIMI_CITY_POLYGON);
+                // 指定した自治体（珠洲市）に含まれるか判定
+                const isInMunicipality = isPointInPolygon(center, SUZU_CITY_POLYGON);
                 if (!isInMunicipality) return;
 
                 totalPop += pop;
@@ -143,17 +144,17 @@ export const useAppLogic = () => {
 
         const scenario = SCENARIOS.find(s => s.id === selectedScenarioId);
         const targetTime = scenario?.time || '12:00:00';
-        const targetDate = '2025-11-01';
+        const targetDate = '2023-05-01';
 
         try {
             const params = new URLSearchParams({
-                fromPlace: "36.79203438947747,137.05797185098484",
+                fromPlace: "37.4363,137.2604", // 珠洲市の中心付近
                 toPlace: `${selectedFacility.lat},${selectedFacility.lon}`,
                 arriveBy: 'true',
                 date: targetDate,
                 time: targetTime,
                 mode: 'WALK,TRANSIT',
-                maxWalkDistance: '1000',
+                maxWalkDistance: '2000',
                 cutoffSec: "21600",
             });
 
