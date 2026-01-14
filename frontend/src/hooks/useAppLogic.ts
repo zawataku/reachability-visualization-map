@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import type { Feature, FeatureCollection, Polygon, MultiPolygon } from "geojson";
+import { intersect, featureCollection } from "@turf/turf";
 import type { Facility, Stats } from "../types";
 import { getPolygonCentroid, isPointInPolygon } from "../utils/geo";
 
@@ -135,6 +136,12 @@ export const useAppLogic = () => {
         });
     }, [isochroneData, populationData, selectedYear]);
 
+    const addOneHour = (timeStr: string, dateStr: string) => {
+        const date = new Date(`${dateStr}T${timeStr}`);
+        date.setHours(date.getHours() + 1);
+        return date.toTimeString().split(' ')[0];
+    };
+
     const handleSearch = async () => {
         if (!selectedFacility) {
             alert("地図上の施設を選択してください");
@@ -149,24 +156,58 @@ export const useAppLogic = () => {
         const targetTime = scenario?.time || '12:00:00';
         const targetDate = '2023-05-01';
         const targetCutoffsec = scenario?.cutoffSec || '21600';
+        const departureTime = addOneHour(targetTime, targetDate);
 
         try {
-            const params = new URLSearchParams({
-                fromPlace: "37.43671338485977, 137.2605634716872", // 珠洲市の中心付近
+            // 到着可能エリア（指定時間に施設に到着）
+            const paramsArrival = new URLSearchParams({
+                fromPlace: `${selectedFacility.lat},${selectedFacility.lon}`,
                 toPlace: `${selectedFacility.lat},${selectedFacility.lon}`,
                 arriveBy: 'true',
                 date: targetDate,
                 time: targetTime,
                 mode: 'WALK,TRANSIT',
-                maxWalkDistance: '500',
+                maxWalkDistance: '1000',
                 cutoffSec: targetCutoffsec,
             });
 
-            const res = await fetch(`http://localhost:8080/otp/routers/default/isochrone?${params.toString()}`);
-            if (!res.ok) throw new Error("API request failed");
+            // 出発可能エリア（施設で1時間滞在して出発）
+            const paramsDeparture = new URLSearchParams({
+                fromPlace: `${selectedFacility.lat},${selectedFacility.lon}`,
+                arriveBy: 'false',
+                date: targetDate,
+                time: departureTime,
+                mode: 'WALK,TRANSIT',
+                maxWalkDistance: '1000',
+                cutoffSec: targetCutoffsec,
+            });
 
-            const data = await res.json();
-            setIsochroneData(data);
+            const [resArrival, resDeparture] = await Promise.all([
+                fetch(`http://localhost:8080/otp/routers/default/isochrone?${paramsArrival.toString()}`),
+                fetch(`http://localhost:8080/otp/routers/default/isochrone?${paramsDeparture.toString()}`)
+            ]);
+
+            if (!resArrival.ok || !resDeparture.ok) throw new Error("API request failed");
+
+            const dataArrival: FeatureCollection = await resArrival.json();
+            const dataDeparture: FeatureCollection = await resDeparture.json();
+
+            if (dataArrival.features.length > 0 && dataDeparture.features.length > 0) {
+                // @ts-expect-error turf types definition might mismatch slightly with raw geojson types
+                const intersection = intersect(featureCollection([dataArrival.features[0], dataDeparture.features[0]]));
+
+                if (intersection) {
+                    setIsochroneData({
+                        type: "FeatureCollection",
+                        features: [intersection]
+                    });
+                } else {
+                    alert("指定した条件を満たすエリアが見つかりませんでした。");
+                    setIsochroneData({ type: "FeatureCollection", features: [] });
+                }
+            } else {
+                setIsochroneData({ type: "FeatureCollection", features: [] });
+            }
 
         } catch (error) {
             console.error(error);
