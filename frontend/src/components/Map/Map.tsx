@@ -40,8 +40,8 @@ const Map = ({
     onSelectFacility,
     isochroneData
 }: MapProps) => {
-    // 初期位置（富山県・石川県境付近）
-    const initialPosition: [number, number] = [36.85, 137.0];
+    // 初期位置（珠洲市）
+    const initialPosition: [number, number] = [37.43671338485977, 137.2605634716872];
 
     const geoJsonStyle = {
         fillColor: "#3B82F6",

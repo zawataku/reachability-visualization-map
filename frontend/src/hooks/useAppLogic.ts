@@ -4,9 +4,9 @@ import type { Facility, Stats } from "../types";
 import { getPolygonCentroid, isPointInPolygon } from "../utils/geo";
 
 export const SCENARIOS = [
-    { id: 'morning', label: '午前中で到達可能', time: '11:30:00', description: '11:30までに到着' },
-    { id: 'afternoon', label: '昼過ぎ(15時頃)までに到達可能', time: '14:30:00', description: '14:30までに到着' },
-    { id: 'evening', label: '夕方までに到達可能', time: '17:00:00', description: '17:00までに到着' },
+    { id: 'morning', label: '午前中で到達可能', time: '12:00:00', description: '12:00までに到着', cutoffSec: '21600' },
+    { id: 'afternoon', label: '昼過ぎ(15時頃)までに到達可能', time: '14:30:00', description: '14:30までに到着', cutoffSec: '30600' },
+    { id: 'evening', label: '夕方までに到達可能', time: '17:00:00', description: '17:00までに到着', cutoffSec: '39600' },
 ];
 
 export const FACILITIES: Facility[] = [
@@ -37,10 +37,13 @@ export const useAppLogic = () => {
                 }
 
                 const tiles = [
+                    { x: 1803, y: 793 },
+                    { x: 1803, y: 794 },
+                    { x: 1803, y: 795 },
+                    { x: 1804, y: 793 },
                     { x: 1804, y: 794 },
-                    { x: 1805, y: 794 },
-                    { x: 1804, y: 795 }, // 追加
-                    { x: 1805, y: 795 }  // 追加
+                    { x: 1805, y: 793 },
+                    { x: 1805, y: 794 }
                 ];
 
                 const requests = tiles.map(tile =>
@@ -145,17 +148,18 @@ export const useAppLogic = () => {
         const scenario = SCENARIOS.find(s => s.id === selectedScenarioId);
         const targetTime = scenario?.time || '12:00:00';
         const targetDate = '2023-05-01';
+        const targetCutoffsec = scenario?.cutoffSec || '21600';
 
         try {
             const params = new URLSearchParams({
-                fromPlace: "37.4363,137.2604", // 珠洲市の中心付近
+                fromPlace: "37.43671338485977, 137.2605634716872", // 珠洲市の中心付近
                 toPlace: `${selectedFacility.lat},${selectedFacility.lon}`,
                 arriveBy: 'true',
                 date: targetDate,
                 time: targetTime,
                 mode: 'WALK,TRANSIT',
-                maxWalkDistance: '2000',
-                cutoffSec: "21600",
+                maxWalkDistance: '500',
+                cutoffSec: targetCutoffsec,
             });
 
             const res = await fetch(`http://localhost:8080/otp/routers/default/isochrone?${params.toString()}`);
