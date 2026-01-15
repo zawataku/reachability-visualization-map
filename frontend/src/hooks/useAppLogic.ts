@@ -27,6 +27,8 @@ export const useAppLogic = () => {
     const [stats, setStats] = useState<Stats | null>(null);
     const [isLoading, setIsLoading] = useState(false);
 
+    const [showPopulation, setShowPopulation] = useState(false);
+
     useEffect(() => {
         const controller = new AbortController();
         const loadPopulationData = async () => {
@@ -39,8 +41,8 @@ export const useAppLogic = () => {
 
                 const tiles = [
                     { x: 1803, y: 793 },
-                    { x: 1803, y: 794 },
-                    { x: 1803, y: 795 },
+                    // { x: 1803, y: 794 },
+                    // { x: 1803, y: 795 },
                     { x: 1804, y: 793 },
                     { x: 1804, y: 794 },
                     { x: 1805, y: 793 },
@@ -188,6 +190,9 @@ export const useAppLogic = () => {
         isochroneData,
         stats,
         isLoading,
-        handleSearch
+        handleSearch,
+        populationData,
+        showPopulation,
+        setShowPopulation
     };
 };

@@ -20,6 +20,8 @@ interface SidebarProps {
     onSelectYear: (year: '2020' | '2065') => void;
     maxWalkDistance: number;
     onSelectMaxWalkDistance: (distance: number) => void;
+    showPopulation: boolean;
+    onTogglePopulation: (show: boolean) => void;
     onSearch: () => void;
     isLoading: boolean;
     stats: Stats | null;
@@ -34,6 +36,8 @@ const Sidebar = ({
     onSelectYear,
     maxWalkDistance,
     onSelectMaxWalkDistance,
+    showPopulation,
+    onTogglePopulation,
     onSearch,
     isLoading,
     stats
@@ -69,6 +73,24 @@ const Sidebar = ({
                             2065年(予想)
                         </button>
                     </div>
+                </div>
+
+                <div className="flex items-center justify-between bg-gray-50 p-3 rounded-lg border border-gray-200">
+                    <span className="text-sm font-medium text-gray-700">人口ヒートマップ</span>
+                    <button
+                        onClick={() => onTogglePopulation(!showPopulation)}
+                        className={`
+                            relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2
+                            ${showPopulation ? 'bg-blue-600' : 'bg-gray-200'}
+                        `}
+                    >
+                        <span
+                            className={`
+                                inline-block h-4 w-4 transform rounded-full bg-white transition-transform
+                                ${showPopulation ? 'translate-x-6' : 'translate-x-1'}
+                            `}
+                        />
+                    </button>
                 </div>
 
                 <WalkDistanceSelector

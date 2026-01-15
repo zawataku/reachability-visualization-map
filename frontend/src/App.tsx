@@ -15,7 +15,10 @@ function App() {
     isochroneData,
     stats,
     isLoading,
-    handleSearch
+    handleSearch,
+    populationData,
+    showPopulation,
+    setShowPopulation,
   } = useAppLogic();
 
   return (
@@ -29,6 +32,8 @@ function App() {
         onSelectYear={setSelectedYear}
         maxWalkDistance={maxWalkDistance}
         onSelectMaxWalkDistance={setMaxWalkDistance}
+        showPopulation={showPopulation}
+        onTogglePopulation={setShowPopulation}
         onSearch={handleSearch}
         isLoading={isLoading}
         stats={stats}
@@ -40,6 +45,9 @@ function App() {
           selectedFacility={selectedFacility}
           onSelectFacility={setSelectedFacility}
           isochroneData={isochroneData}
+          populationData={populationData}
+          showPopulation={showPopulation}
+          selectedYear={selectedYear}
         />
 
         {isochroneData && (
