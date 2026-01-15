@@ -4,9 +4,9 @@ import type { Facility, Stats } from "../types";
 import { getPolygonCentroid, isPointInPolygon } from "../utils/geo";
 
 export const SCENARIOS = [
-    { id: 'morning', label: '午前中で到達可能', time: '12:00:00', description: '12:00までに到着', cutoffSec: '21600' },
-    { id: 'afternoon', label: '昼過ぎ(15時頃)までに到達可能', time: '14:30:00', description: '14:30までに到着', cutoffSec: '30600' },
-    { id: 'evening', label: '夕方までに到達可能', time: '17:00:00', description: '17:00までに到着', cutoffSec: '39600' },
+    { id: 'morning', label: '午前中で到達可能', time: '12:00:00', description: '12:00までに到着', cutoffSec: '7200' },
+    { id: 'afternoon', label: '昼過ぎ(15時頃)までに到達可能', time: '14:30:00', description: '14:30までに到着', cutoffSec: '16200' },
+    { id: 'evening', label: '夕方までに到達可能', time: '17:00:00', description: '17:00までに到着', cutoffSec: '25200' },
 ];
 
 export const FACILITIES: Facility[] = [
@@ -21,6 +21,7 @@ export const useAppLogic = () => {
     const [selectedFacility, setSelectedFacility] = useState<Facility | null>(null);
     const [selectedScenarioId, setSelectedScenarioId] = useState<string>(SCENARIOS[0].id);
     const [selectedYear, setSelectedYear] = useState<'2020' | '2065'>('2020');
+    const [maxWalkDistance, setMaxWalkDistance] = useState<number>(500);
     const [isochroneData, setIsochroneData] = useState<FeatureCollection | null>(null);
     const [populationData, setPopulationData] = useState<FeatureCollection | null>(null);
     const [stats, setStats] = useState<Stats | null>(null);
@@ -158,7 +159,7 @@ export const useAppLogic = () => {
                 date: targetDate,
                 time: targetTime,
                 mode: 'WALK,TRANSIT',
-                maxWalkDistance: '500',
+                maxWalkDistance: maxWalkDistance.toString(),
                 cutoffSec: targetCutoffsec,
             });
 
@@ -182,6 +183,8 @@ export const useAppLogic = () => {
         setSelectedScenarioId,
         selectedYear,
         setSelectedYear,
+        maxWalkDistance,
+        setMaxWalkDistance,
         isochroneData,
         stats,
         isLoading,

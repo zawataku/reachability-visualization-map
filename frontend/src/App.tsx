@@ -10,6 +10,8 @@ function App() {
     setSelectedScenarioId,
     selectedYear,
     setSelectedYear,
+    maxWalkDistance, // Add this
+    setMaxWalkDistance, // Add this
     isochroneData,
     stats,
     isLoading,
@@ -25,6 +27,8 @@ function App() {
         onSelectScenarioId={setSelectedScenarioId}
         selectedYear={selectedYear}
         onSelectYear={setSelectedYear}
+        maxWalkDistance={maxWalkDistance}
+        onSelectMaxWalkDistance={setMaxWalkDistance}
         onSearch={handleSearch}
         isLoading={isLoading}
         stats={stats}

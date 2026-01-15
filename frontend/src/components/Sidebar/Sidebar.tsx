@@ -1,6 +1,7 @@
 import type { Facility, Stats } from "../../types";
 import FacilitySelector from "./FacilitySelector";
 import ScenarioSelector from "./ScenarioSelector";
+import WalkDistanceSelector from "./WalkDistanceSelector";
 import StatsDisplay from "./StatsDisplay";
 
 interface Scenario {
@@ -17,6 +18,8 @@ interface SidebarProps {
     onSelectScenarioId: (id: string) => void;
     selectedYear: '2020' | '2065';
     onSelectYear: (year: '2020' | '2065') => void;
+    maxWalkDistance: number;
+    onSelectMaxWalkDistance: (distance: number) => void;
     onSearch: () => void;
     isLoading: boolean;
     stats: Stats | null;
@@ -29,6 +32,8 @@ const Sidebar = ({
     onSelectScenarioId,
     selectedYear,
     onSelectYear,
+    maxWalkDistance,
+    onSelectMaxWalkDistance,
     onSearch,
     isLoading,
     stats
@@ -65,6 +70,11 @@ const Sidebar = ({
                         </button>
                     </div>
                 </div>
+
+                <WalkDistanceSelector
+                    maxWalkDistance={maxWalkDistance}
+                    onSelectMaxWalkDistance={onSelectMaxWalkDistance}
+                />
 
                 <button
                     onClick={onSearch}
