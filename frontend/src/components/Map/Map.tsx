@@ -50,11 +50,11 @@ const Map = ({
     const initialPosition: [number, number] = [37.43671338485977, 137.2605634716872];
 
     const geoJsonStyle = {
-        fillColor: "#3B82F6",
+        fillColor: "#689F38",
         weight: 1,
         opacity: 1,
         color: 'white',
-        fillOpacity: 0.4
+        fillOpacity: 0.5
     };
 
     const getPopulationColor = (pop: number) => {

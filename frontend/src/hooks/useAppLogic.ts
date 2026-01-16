@@ -12,6 +12,7 @@ export const SCENARIOS = [
 export const FACILITIES: Facility[] = [
     { id: '1', name: '珠洲市総合病院', lat: 37.443687763127535, lon: 137.27066058600244, type: 'hospital' },
     { id: '2', name: 'ゲンキー野々江店', lat: 37.44214641839527, lon: 137.27335936962766, type: 'supermarket' },
+    { id: '3', name: '大坊ストアー', lat: 37.46220360884485, lon: 137.21582766200643, type: 'supermarket' },
     // { id: '3', name: 'イオンモール高岡', lat: 36.72398312341095, lon: 137.01681490346044, type: 'supermarket' },
 ];
 
