@@ -43,8 +43,8 @@ const Sidebar = ({
     stats
 }: SidebarProps) => {
     return (
-        <div className="w-1/3 max-w-sm bg-white border-r border-gray-200 flex flex-col shadow-xl z-20 shrink-0">
-            <div className="p-6 bg-blue-600 text-white shadow-md z-10">
+        <div className="w-1/3 max-w-sm bg-white border-r border-gray-200 flex flex-col z-20 shrink-0">
+            <div className="p-6 bg-blue-600 text-white z-10">
                 <h1 className="text-xl font-bold tracking-wide">生活交通シミュレータ</h1>
                 <p className="text-xs mt-1 opacity-80 font-medium">施設への到達可能性と人口カバー率</p>
             </div>
@@ -62,13 +62,13 @@ const Sidebar = ({
                     <div className="flex bg-gray-200 rounded-lg p-1 relative">
                         <button
                             onClick={() => onSelectYear('2020')}
-                            className={`px-3 py-1 text-xs font-bold rounded-md transition-all z-10 ${selectedYear === '2020' ? 'bg-white text-blue-600 shadow-sm' : 'text-gray-500 hover:text-gray-700'}`}
+                            className={`px-3 py-1 text-xs font-bold rounded-md transition-all z-10 ${selectedYear === '2020' ? 'bg-white text-blue-600' : 'text-gray-500 hover:text-gray-700'}`}
                         >
                             2020年
                         </button>
                         <button
                             onClick={() => onSelectYear('2065')}
-                            className={`px-3 py-1 text-xs font-bold rounded-md transition-all z-10 ${selectedYear === '2065' ? 'bg-white text-blue-600 shadow-sm' : 'text-gray-500 hover:text-gray-700'}`}
+                            className={`px-3 py-1 text-xs font-bold rounded-md transition-all z-10 ${selectedYear === '2065' ? 'bg-white text-blue-600' : 'text-gray-500 hover:text-gray-700'}`}
                         >
                             2065年(予想)
                         </button>
@@ -102,10 +102,10 @@ const Sidebar = ({
                     onClick={onSearch}
                     disabled={isLoading || !selectedFacility}
                     className={`
-            w-full py-4 rounded-xl font-bold text-white shadow-md transition-all duration-200
+            w-full py-4 rounded-xl font-bold text-white transition-all duration-200
             ${isLoading || !selectedFacility
                             ? 'bg-gray-400 cursor-not-allowed'
-                            : 'bg-green-600 hover:bg-green-700 hover:shadow-lg active:scale-[0.98]'}
+                            : 'bg-green-600 hover:bg-green-700 active:scale-[0.98]'}
           `}
                 >
                     {isLoading ? '計算中...' : '到達圏を表示'}

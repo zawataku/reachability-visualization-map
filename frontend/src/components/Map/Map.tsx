@@ -4,6 +4,7 @@ import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import type { FeatureCollection, Feature } from "geojson";
 import type { Facility } from "../../types";
+import busStops from "../../data/bus_stops.json";
 
 const iconUrl = "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png";
 const iconRetinaUrl = "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png";
@@ -15,6 +16,13 @@ L.Icon.Default.mergeOptions({
     iconRetinaUrl,
     iconUrl,
     shadowUrl,
+});
+
+const busIcon = new L.Icon({
+    iconUrl: '/bus_stand.png',
+    iconSize: [25, 39],
+    iconAnchor: [12, 12],
+    popupAnchor: [0, -12],
 });
 
 const RecenterMap = ({ center }: { center: [number, number] | null }) => {
@@ -105,6 +113,18 @@ const Map = ({
                     <Popup>
                         <strong>{facility.name}</strong>
                         {/* <br /> {facility.type === 'hospital' ? '🏥 病院' : '🛒 スーパー'} */}
+                    </Popup>
+                </Marker>
+            ))}
+
+            {busStops.map((stop, index) => (
+                <Marker
+                    key={`bus-${index}`}
+                    position={[stop.lat, stop.lon]}
+                    icon={busIcon}
+                >
+                    <Popup>
+                        <strong>{stop.name}</strong>
                     </Popup>
                 </Marker>
             ))}
