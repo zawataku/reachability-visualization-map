@@ -29,6 +29,7 @@ export const useAppLogic = () => {
     const [isLoading, setIsLoading] = useState(false);
 
     const [showPopulation, setShowPopulation] = useState(false);
+    const [showBusStops, setShowBusStops] = useState(true);
 
     useEffect(() => {
         const controller = new AbortController();
@@ -194,6 +195,8 @@ export const useAppLogic = () => {
         handleSearch,
         populationData,
         showPopulation,
-        setShowPopulation
+        setShowPopulation,
+        showBusStops,
+        setShowBusStops
     };
 };

@@ -42,6 +42,7 @@ interface MapProps {
     isochroneData: FeatureCollection | null;
     populationData: FeatureCollection | null;
     showPopulation: boolean;
+    showBusStops: boolean;
     selectedYear: '2020' | '2065';
 }
 
@@ -52,6 +53,7 @@ const Map = ({
     isochroneData,
     populationData,
     showPopulation,
+    showBusStops,
     selectedYear
 }: MapProps) => {
     // 初期位置（珠洲市）
@@ -117,7 +119,7 @@ const Map = ({
                 </Marker>
             ))}
 
-            {busStops.map((stop, index) => (
+            {showBusStops && busStops.map((stop, index) => (
                 <Marker
                     key={`bus-${index}`}
                     position={[stop.lat, stop.lon]}

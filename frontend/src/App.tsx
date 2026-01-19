@@ -19,6 +19,8 @@ function App() {
     populationData,
     showPopulation,
     setShowPopulation,
+    showBusStops,      // Add this
+    setShowBusStops,   // Add this
   } = useAppLogic();
 
   return (
@@ -34,6 +36,8 @@ function App() {
         onSelectMaxWalkDistance={setMaxWalkDistance}
         showPopulation={showPopulation}
         onTogglePopulation={setShowPopulation}
+        showBusStops={showBusStops}         // Add this
+        onToggleBusStops={setShowBusStops}  // Add this
         onSearch={handleSearch}
         isLoading={isLoading}
         stats={stats}
@@ -47,6 +51,7 @@ function App() {
           isochroneData={isochroneData}
           populationData={populationData}
           showPopulation={showPopulation}
+          showBusStops={showBusStops}       // Add this
           selectedYear={selectedYear}
         />
 
