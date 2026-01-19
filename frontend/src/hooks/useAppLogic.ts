@@ -23,11 +23,15 @@ export const useAppLogic = () => {
     const [selectedFacility, setSelectedFacility] = useState<Facility | null>(null);
     const [selectedScenarioId, setSelectedScenarioId] = useState<string>(SCENARIOS[0].id);
     const [selectedYear, setSelectedYear] = useState<'2020' | '2065'>('2020');
+    const [maxWalkDistance, setMaxWalkDistance] = useState<number>(500);
     const [isochroneData, setIsochroneData] = useState<FeatureCollection | null>(null);
     const [populationData, setPopulationData] = useState<FeatureCollection | null>(null);
     const [stats, setStats] = useState<Stats | null>(null);
     const [isLoading, setIsLoading] = useState(false);
     const [maxWalkDistance, setMaxWalkDistance] = useState<number>(1000);
+
+    const [showPopulation, setShowPopulation] = useState(false);
+    const [showBusStops, setShowBusStops] = useState(true);
 
     useEffect(() => {
         const controller = new AbortController();
@@ -41,8 +45,8 @@ export const useAppLogic = () => {
 
                 const tiles = [
                     { x: 1803, y: 793 },
-                    { x: 1803, y: 794 },
-                    { x: 1803, y: 795 },
+                    // { x: 1803, y: 794 },
+                    // { x: 1803, y: 795 },
                     { x: 1804, y: 793 },
                     { x: 1804, y: 794 },
                     { x: 1805, y: 793 },
@@ -226,6 +230,8 @@ export const useAppLogic = () => {
         setSelectedScenarioId,
         selectedYear,
         setSelectedYear,
+        maxWalkDistance,
+        setMaxWalkDistance,
         isochroneData,
         stats,
         isLoading,

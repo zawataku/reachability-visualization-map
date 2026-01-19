@@ -10,6 +10,8 @@ function App() {
     setSelectedScenarioId,
     selectedYear,
     setSelectedYear,
+    maxWalkDistance, // Add this
+    setMaxWalkDistance, // Add this
     isochroneData,
     stats,
     isLoading,
@@ -27,6 +29,12 @@ function App() {
         onSelectScenarioId={setSelectedScenarioId}
         selectedYear={selectedYear}
         onSelectYear={setSelectedYear}
+        maxWalkDistance={maxWalkDistance}
+        onSelectMaxWalkDistance={setMaxWalkDistance}
+        showPopulation={showPopulation}
+        onTogglePopulation={setShowPopulation}
+        showBusStops={showBusStops}         // Add this
+        onToggleBusStops={setShowBusStops}  // Add this
         onSearch={handleSearch}
         isLoading={isLoading}
         stats={stats}
@@ -40,6 +48,10 @@ function App() {
           selectedFacility={selectedFacility}
           onSelectFacility={setSelectedFacility}
           isochroneData={isochroneData}
+          populationData={populationData}
+          showPopulation={showPopulation}
+          showBusStops={showBusStops}       // Add this
+          selectedYear={selectedYear}
         />
 
         {isochroneData && (
