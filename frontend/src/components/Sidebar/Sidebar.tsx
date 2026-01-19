@@ -27,6 +27,8 @@ interface SidebarProps {
     onSearch: () => void;
     isLoading: boolean;
     stats: Stats | null;
+    maxWalkDistance: number;
+    onSelectMaxWalkDistance: (distance: number) => void;
 }
 
 const Sidebar = ({
@@ -44,7 +46,9 @@ const Sidebar = ({
     onToggleBusStops,
     onSearch,
     isLoading,
-    stats
+    stats,
+    maxWalkDistance,
+    onSelectMaxWalkDistance
 }: SidebarProps) => {
     return (
         <div className="w-1/3 max-w-sm bg-white border-r border-gray-200 flex flex-col z-20 shrink-0">
@@ -79,46 +83,23 @@ const Sidebar = ({
                     </div>
                 </div>
 
-                <div className="flex items-center justify-between bg-gray-50 p-3 rounded-lg border border-gray-200">
-                    <span className="text-sm font-medium text-gray-700">人口ヒートマップ</span>
-                    <button
-                        onClick={() => onTogglePopulation(!showPopulation)}
-                        className={`
-                            relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2
-                            ${showPopulation ? 'bg-blue-600' : 'bg-gray-200'}
-                        `}
-                    >
-                        <span
-                            className={`
-                                inline-block h-4 w-4 transform rounded-full bg-white transition-transform
-                                ${showPopulation ? 'translate-x-6' : 'translate-x-1'}
-                            `}
-                        />
-                    </button>
+                <div className="flex flex-col gap-2 bg-gray-50 p-3 rounded-lg border border-gray-200">
+                    <span className="text-sm font-medium text-gray-700">最大徒歩距離 (m)</span>
+                    <div className="flex flex-wrap gap-1">
+                        {[300, 500, 1000, 1500, 2000].map((dist) => (
+                            <button
+                                key={dist}
+                                onClick={() => onSelectMaxWalkDistance(dist)}
+                                className={`flex-1 min-w-12 px-2 py-1 text-xs font-bold rounded-md transition-all border ${maxWalkDistance === dist
+                                    ? 'bg-blue-600 text-white border-blue-600 shadow-sm'
+                                    : 'bg-white text-gray-600 border-gray-200 hover:bg-gray-50'
+                                    }`}
+                            >
+                                {dist}
+                            </button>
+                        ))}
+                    </div>
                 </div>
-
-                <div className="flex items-center justify-between bg-gray-50 p-3 rounded-lg border border-gray-200">
-                    <span className="text-sm font-medium text-gray-700">バス停を表示</span>
-                    <button
-                        onClick={() => onToggleBusStops(!showBusStops)}
-                        className={`
-                            relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2
-                            ${showBusStops ? 'bg-blue-600' : 'bg-gray-200'}
-                        `}
-                    >
-                        <span
-                            className={`
-                                inline-block h-4 w-4 transform rounded-full bg-white transition-transform
-                                ${showBusStops ? 'translate-x-6' : 'translate-x-1'}
-                            `}
-                        />
-                    </button>
-                </div>
-
-                <WalkDistanceSelector
-                    maxWalkDistance={maxWalkDistance}
-                    onSelectMaxWalkDistance={onSelectMaxWalkDistance}
-                />
 
                 <button
                     onClick={onSearch}

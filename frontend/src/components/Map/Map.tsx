@@ -60,33 +60,11 @@ const Map = ({
     const initialPosition: [number, number] = [37.43671338485977, 137.2605634716872];
 
     const geoJsonStyle = {
-        fillColor: "#689F38",
+        fillColor: "#00796B",
         weight: 1,
         opacity: 1,
         color: 'white',
         fillOpacity: 0.5
-    };
-
-    const getPopulationColor = (pop: number) => {
-        if (pop > 100) return '#b91c1c'; // red-700
-        if (pop > 50) return '#ea580c'; // orange-600
-        if (pop > 20) return '#f59e0b'; // amber-500
-        if (pop > 10) return '#facc15'; // yellow-400
-        if (pop > 0) return '#fef08a'; // yellow-200
-        return 'transparent';
-    };
-
-    const populationStyle = (feature: Feature | undefined) => {
-        const props = feature?.properties || {};
-        const pop = selectedYear === '2020' ? (props.PTN_2020 || 0) : (props.PTN_2065 || 0);
-
-        return {
-            fillColor: getPopulationColor(pop),
-            weight: 0.5,
-            opacity: 0.5,
-            color: 'gray',
-            fillOpacity: 0.5
-        };
     };
 
     return (
@@ -114,19 +92,6 @@ const Map = ({
                 >
                     <Popup>
                         <strong>{facility.name}</strong>
-                        {/* <br /> {facility.type === 'hospital' ? '🏥 病院' : '🛒 スーパー'} */}
-                    </Popup>
-                </Marker>
-            ))}
-
-            {showBusStops && busStops.map((stop, index) => (
-                <Marker
-                    key={`bus-${index}`}
-                    position={[stop.lat, stop.lon]}
-                    icon={busIcon}
-                >
-                    <Popup>
-                        <strong>{stop.name}</strong>
                     </Popup>
                 </Marker>
             ))}

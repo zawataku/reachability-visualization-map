@@ -16,11 +16,8 @@ function App() {
     stats,
     isLoading,
     handleSearch,
-    populationData,
-    showPopulation,
-    setShowPopulation,
-    showBusStops,      // Add this
-    setShowBusStops,   // Add this
+    maxWalkDistance,
+    setMaxWalkDistance
   } = useAppLogic();
 
   return (
@@ -41,6 +38,8 @@ function App() {
         onSearch={handleSearch}
         isLoading={isLoading}
         stats={stats}
+        maxWalkDistance={maxWalkDistance}
+        onSelectMaxWalkDistance={setMaxWalkDistance}
       />
 
       <div className="flex-1 relative">
