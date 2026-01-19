@@ -13,7 +13,9 @@ function App() {
     isochroneData,
     stats,
     isLoading,
-    handleSearch
+    handleSearch,
+    maxWalkDistance,
+    setMaxWalkDistance
   } = useAppLogic();
 
   return (
@@ -28,6 +30,8 @@ function App() {
         onSearch={handleSearch}
         isLoading={isLoading}
         stats={stats}
+        maxWalkDistance={maxWalkDistance}
+        onSelectMaxWalkDistance={setMaxWalkDistance}
       />
 
       <div className="flex-1 relative">

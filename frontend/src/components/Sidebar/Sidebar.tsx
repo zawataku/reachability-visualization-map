@@ -20,6 +20,8 @@ interface SidebarProps {
     onSearch: () => void;
     isLoading: boolean;
     stats: Stats | null;
+    maxWalkDistance: number;
+    onSelectMaxWalkDistance: (distance: number) => void;
 }
 
 const Sidebar = ({
@@ -31,7 +33,9 @@ const Sidebar = ({
     onSelectYear,
     onSearch,
     isLoading,
-    stats
+    stats,
+    maxWalkDistance,
+    onSelectMaxWalkDistance
 }: SidebarProps) => {
     return (
         <div className="w-1/3 max-w-sm bg-white border-r border-gray-200 flex flex-col shadow-xl z-20 shrink-0">
@@ -63,6 +67,24 @@ const Sidebar = ({
                         >
                             2065年(予想)
                         </button>
+                    </div>
+                </div>
+
+                <div className="flex flex-col gap-2 bg-gray-50 p-3 rounded-lg border border-gray-200">
+                    <span className="text-sm font-medium text-gray-700">最大徒歩距離 (m)</span>
+                    <div className="flex flex-wrap gap-1">
+                        {[300, 500, 1000, 1500, 2000].map((dist) => (
+                            <button
+                                key={dist}
+                                onClick={() => onSelectMaxWalkDistance(dist)}
+                                className={`flex-1 min-w-12 px-2 py-1 text-xs font-bold rounded-md transition-all border ${maxWalkDistance === dist
+                                    ? 'bg-blue-600 text-white border-blue-600 shadow-sm'
+                                    : 'bg-white text-gray-600 border-gray-200 hover:bg-gray-50'
+                                    }`}
+                            >
+                                {dist}
+                            </button>
+                        ))}
                     </div>
                 </div>
 

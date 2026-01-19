@@ -44,11 +44,11 @@ const Map = ({
     const initialPosition: [number, number] = [37.43671338485977, 137.2605634716872];
 
     const geoJsonStyle = {
-        fillColor: "#3B82F6",
+        fillColor: "#00796B",
         weight: 1,
         opacity: 1,
         color: 'white',
-        fillOpacity: 0.4
+        fillOpacity: 0.5
     };
 
     return (
@@ -67,8 +67,7 @@ const Map = ({
                     }}
                 >
                     <Popup>
-                        <strong>{facility.name}</strong><br />
-                        {facility.type === 'hospital' ? '🏥 病院' : '🛒 スーパー'}
+                        <strong>{facility.name}</strong>
                     </Popup>
                 </Marker>
             ))}

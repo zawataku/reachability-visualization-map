@@ -5,14 +5,15 @@ import type { Facility, Stats } from "../types";
 import { getPolygonCentroid, isPointInPolygon } from "../utils/geo";
 
 export const SCENARIOS = [
-    { id: 'morning', label: '午前中で到達可能', time: '12:00:00', description: '12:00までに到着', cutoffSec: '21600' },
-    { id: 'afternoon', label: '昼過ぎ(15時頃)までに到達可能', time: '14:30:00', description: '14:30までに到着', cutoffSec: '30600' },
-    { id: 'evening', label: '夕方までに到達可能', time: '17:00:00', description: '17:00までに到着', cutoffSec: '39600' },
+    { id: '1', label: '12時までに到達，滞在後17時までに帰宅', time: '12:00:00', description: '12時までに到達，滞在後17時までに帰宅', ArriveCutoffSec: '7200', DepartureCutoffSec: '10800' },
+    { id: '2', label: '12時までに到達，滞在後17時までに帰宅（早朝に出発バージョン）', time: '12:00:00', description: '12時までに到達，滞在後17時までに帰宅（早朝に出発バージョン）', ArriveCutoffSec: '10800', DepartureCutoffSec: '10800' },
+    // { id: 'afternoon', label: '昼過ぎ(15時頃)までに到達可能', time: '14:30:00', description: '14:30までに到着', ArriveCutoffSec: '30600',DepartureCutoffSec: '30600' },
+    // { id: 'evening', label: '夕方までに到達可能', time: '17:00:00', description: '17:00までに到着', ArriveCutoffSec: '39600',DepartureCutoffSec: '39600' },
 ];
 
 export const FACILITIES: Facility[] = [
     { id: '1', name: '珠洲市総合病院', lat: 37.443687763127535, lon: 137.27066058600244, type: 'hospital' },
-    { id: '2', name: 'ゲンキー野々江店', lat: 37.44214641839527, lon: 137.27335936962766, type: 'supermarket' },
+    // { id: '2', name: 'ゲンキー野々江店', lat: 37.44214641839527, lon: 137.27335936962766, type: 'supermarket' },
     // { id: '3', name: 'イオンモール高岡', lat: 36.72398312341095, lon: 137.01681490346044, type: 'supermarket' },
 ];
 
@@ -26,6 +27,7 @@ export const useAppLogic = () => {
     const [populationData, setPopulationData] = useState<FeatureCollection | null>(null);
     const [stats, setStats] = useState<Stats | null>(null);
     const [isLoading, setIsLoading] = useState(false);
+    const [maxWalkDistance, setMaxWalkDistance] = useState<number>(1000);
 
     useEffect(() => {
         const controller = new AbortController();
@@ -136,11 +138,11 @@ export const useAppLogic = () => {
         });
     }, [isochroneData, populationData, selectedYear]);
 
-    const addOneHour = (timeStr: string, dateStr: string) => {
-        const date = new Date(`${dateStr}T${timeStr}`);
-        date.setHours(date.getHours() + 1);
-        return date.toTimeString().split(' ')[0];
-    };
+    // const addOneHour = (timeStr: string, dateStr: string) => {
+    //     const date = new Date(`${dateStr}T${timeStr}`);
+    //     date.setHours(date.getHours() + 1);
+    //     return date.toTimeString().split(' ')[0];
+    // };
 
     const handleSearch = async () => {
         if (!selectedFacility) {
@@ -155,8 +157,9 @@ export const useAppLogic = () => {
         const scenario = SCENARIOS.find(s => s.id === selectedScenarioId);
         const targetTime = scenario?.time || '12:00:00';
         const targetDate = '2023-05-01';
-        const targetCutoffsec = scenario?.cutoffSec || '21600';
-        const departureTime = addOneHour(targetTime, targetDate);
+        const ArriveCutoffsec = scenario?.ArriveCutoffSec || '21600';
+        const DepartureCutoffsec = scenario?.DepartureCutoffSec || '10800';
+        const departureTime = '14:00:00';
 
         try {
             // 到着可能エリア（指定時間に施設に到着）
@@ -167,8 +170,8 @@ export const useAppLogic = () => {
                 date: targetDate,
                 time: targetTime,
                 mode: 'WALK,TRANSIT',
-                maxWalkDistance: '1000',
-                cutoffSec: targetCutoffsec,
+                maxWalkDistance: maxWalkDistance.toString(),
+                cutoffSec: ArriveCutoffsec,
             });
 
             // 出発可能エリア（施設で1時間滞在して出発）
@@ -178,8 +181,8 @@ export const useAppLogic = () => {
                 date: targetDate,
                 time: departureTime,
                 mode: 'WALK,TRANSIT',
-                maxWalkDistance: '1000',
-                cutoffSec: targetCutoffsec,
+                maxWalkDistance: maxWalkDistance.toString(),
+                cutoffSec: DepartureCutoffsec,
             });
 
             const [resArrival, resDeparture] = await Promise.all([
@@ -226,6 +229,8 @@ export const useAppLogic = () => {
         isochroneData,
         stats,
         isLoading,
-        handleSearch
+        handleSearch,
+        maxWalkDistance,
+        setMaxWalkDistance
     };
 };
